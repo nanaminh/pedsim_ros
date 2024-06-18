@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Created on Mon Dec  2 17:03:34 2019
 
@@ -129,7 +129,7 @@ def generate_gzb_world( pedsim_file_name ):
     </sdf>
     
         '''
-    print "gazbo world has been generated: {}".format( gazebo_world)
+    print("gazbo world has been generated: {}".format( gazebo_world))
       
       
       
@@ -153,7 +153,7 @@ def generate_launch_file( pedsim_file_name ):
 
 </launch>
 '''.format(pedsim_file_name.split('.')[0])
-    print "launch file has been generated: {}".format( launch_file )
+    print("launch file has been generated: {}".format( launch_file ))
  
 
       
@@ -163,6 +163,6 @@ if __name__ == "__main__":
     # genrate gazebo wolrd 
     generate_gzb_world( pedsim_file_name )     
     generate_launch_file( pedsim_file_name ) 
-    print ">> after you launch the scenario using pedsim_simulator, launch the generated world using: "
-    print " \" $roslaunch pedsim_gazebo_plugin {}.launch\"  ".format( pedsim_file_name.split('.')[0] )
+    print(">> after you launch the scenario using pedsim_simulator, launch the generated world using: ")
+    print(" \" $roslaunch pedsim_gazebo_plugin {}.launch\"  ".format( pedsim_file_name.split('.')[0] ))
     

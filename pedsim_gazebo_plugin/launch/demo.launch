@@ -1,0 +1,25 @@
+<launch>
+  <node pkg="pedsim_gazebo_plugin" type="spawn_pedsim_agents.py" name="spawn_pedsim_agents"  output="screen">
+  </node>
+
+  <arg name="laser_enabled" default="true"/>
+  <arg name="camera_h_enabled" default="true"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find pedsim_gazebo_plugin)/worlds/doors.world"/>
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>  
+
+  <!-- Spawn pmb2 -->
+  <include file="$(find pmb2_gazebo)/launch/pmb2_spawn.launch">
+    <arg name="gzpose" default="-x 0 -y 0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+    <arg name="laser_model"  default="sick-571"/>
+    <arg name="rgbd_sensors"  default="false"/>
+  </include>
+
+  <!-- <remap from="/pedbot/control/cmd_vel" to="/mobile_base_controller/cmd_vel geometry_msgs/Twist"/> -->
+  <!-- bring up pmb2  -->
+</launch>

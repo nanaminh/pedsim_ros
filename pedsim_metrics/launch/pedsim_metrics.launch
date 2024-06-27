@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="pedsim_metrics" type="nav_metrics.py" name="nav_metrics"  output="screen">
+    </node>
+    <rosparam file="$(find pedsim_metrics)/config/metrics.yaml" />
+
+</launch>

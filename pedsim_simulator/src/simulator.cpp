@@ -89,7 +89,8 @@ bool Simulator::initializeSimulation() {
       "unpause_simulation", &Simulator::onUnpauseSimulation, this);
 
   // setup TF listener and other pointers
-  transform_listener_.reset(new tf::TransformListener());
+  // Changed by nanaminh
+  //transform_listener_.reset(new tf::TransformListener());
   robot_ = nullptr;
 
   // load additional parameters
@@ -152,6 +153,16 @@ void Simulator::runSimulation() {
 
     if (!paused_) {
       updateRobotPositionFromTF();
+      // renew the robot position in the scene: added by xzt
+      for (Agent* agent : SCENE.getAgents()) {
+          if (agent->getType() == Ped::Tagent::ROBOT) 
+          {
+            robot_->setType(Ped::Tagent::ROBOT);
+            SCENE.agents[agent->getId()] = robot_;
+            break;
+          }
+       }  
+
       SCENE.moveAllAgents();
 
       publishAgents();
@@ -226,41 +237,64 @@ void Simulator::updateRobotPositionFromTF() {
     robot_->setTeleop(true);
     robot_->setVmax(2 * CONFIG.max_robot_speed);
 
-    // Get robot position via TF
-    tf::StampedTransform tfTransform;
-    try {
-      transform_listener_->lookupTransform(frame_id_, robot_base_frame_id_,
-                                           ros::Time(0), tfTransform);
-    } catch (tf::TransformException& e) {
-      ROS_WARN_STREAM_THROTTLE(
-          5.0,
-          "TF lookup from " << robot_base_frame_id_ << " to " << frame_id_
-          << " failed. Reason: " << e.what());
-      return;
-    }
+    // get the real robot position from the gazebo world: added by xzt
+    ros::ServiceClient client = nh_.serviceClient<gazebo_msgs::GetModelState>("/gazebo/get_model_state"); 
+    gazebo_msgs::GetModelState getmodelstate;
+    getmodelstate.request.model_name = "pmb2"; // Changed by nanaminh to adjust to the right topic
+    getmodelstate.request.relative_entity_name = "world"; 
+    client.call(getmodelstate);
 
-    const double x = tfTransform.getOrigin().x();
-    const double y = tfTransform.getOrigin().y();
-    const double dx = x - last_robot_pose_.getOrigin().x(),
-                 dy = y - last_robot_pose_.getOrigin().y();
-    const double dt =
-        tfTransform.stamp_.toSec() - last_robot_pose_.stamp_.toSec();
-    double vx = dx / dt, vy = dy / dt;
+    last_robot_orientation_ = getmodelstate.response.pose.orientation;
+
+    const double x = getmodelstate.response.pose.position.x;
+    const double y = getmodelstate.response.pose.position.y;
+    double vx = getmodelstate.response.twist.linear.x;
+    double vy = getmodelstate.response.twist.linear.y;
 
     if (!std::isfinite(vx)) vx = 0;
     if (!std::isfinite(vy)) vy = 0;
 
-    ROS_DEBUG_STREAM("rx, ry: " << robot_->getx() << ", " << robot_->gety() << " vs: " << x << ", " << y);
-
-    robot_->setX(x);
-    robot_->setY(y);
+    robot_->setX(x+0.0);
+    robot_->setY(y+0.0);
     robot_->setvx(vx);
     robot_->setvy(vy);
+    /*
+    // Get robot position via TF
+    // tf::StampedTransform tfTransform;
+    // try {
+    //   transform_listener_->lookupTransform(frame_id_, robot_base_frame_id_,
+    //                                        ros::Time(0), tfTransform);
+    // } catch (tf::TransformException& e) {
+    //   ROS_WARN_STREAM_THROTTLE(
+    //       5.0,
+    //       "TF lookup from " << robot_base_frame_id_ << " to " << frame_id_
+    //       << " failed. Reason: " << e.what());
+    //   return;
+    // }
+
+    // const double x = tfTransform.getOrigin().x();
+    // const double y = tfTransform.getOrigin().y();
+    // const double dx = x - last_robot_pose_.getOrigin().x(),
+    //              dy = y - last_robot_pose_.getOrigin().y();
+    // const double dt =
+    //     tfTransform.stamp_.toSec() - last_robot_pose_.stamp_.toSec();
+    // double vx = dx / dt, vy = dy / dt;
+
+    // if (!std::isfinite(vx)) vx = 0;
+    // if (!std::isfinite(vy)) vy = 0;
+
+    // ROS_DEBUG_STREAM("rx, ry: " << robot_->getx() << ", " << robot_->gety() << " vs: " << x << ", " << y);
+
+    // robot_->setX(x);
+    // robot_->setY(y);
+    // robot_->setvx(vx);
+    // robot_->setvy(vy);
 
 
-    ROS_DEBUG_STREAM("Robot speed: " << std::hypot(vx, vy) << " dt: " << dt);
+    // ROS_DEBUG_STREAM("Robot speed: " << std::hypot(vx, vy) << " dt: " << dt);
 
-    last_robot_pose_ = tfTransform;
+    // last_robot_pose_ = tfTransform;
+    */
   }
 }
 
@@ -273,6 +307,8 @@ void Simulator::publishRobotPosition() {
 
   robot_location.pose.pose.position.x = robot_->getx();
   robot_location.pose.pose.position.y = robot_->gety();
+    // changed by xzt:
+  /*
   if (hypot(robot_->getvx(), robot_->getvy()) < 0.05) {
     robot_location.pose.pose.orientation = last_robot_orientation_;
   } else {
@@ -280,7 +316,9 @@ void Simulator::publishRobotPosition() {
         poseFrom2DVelocity(robot_->getvx(), robot_->getvy());
     last_robot_orientation_ = robot_location.pose.pose.orientation;
   }
-
+  */
+  robot_location.pose.pose.orientation = last_robot_orientation_;
+  
   robot_location.twist.twist.linear.x = robot_->getvx();
   robot_location.twist.twist.linear.y = robot_->getvy();
 

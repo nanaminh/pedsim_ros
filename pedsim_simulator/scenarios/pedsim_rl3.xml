@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario>
+  <!--Obstacles-->
+
+  <!-- Inner Space -->
+  <obstacle x1="-1.0" y1="3.0" x2="-1.0" y2="-3.0"/>
+  <obstacle x1="-1.0" y1="-3.0" x2="2.5" y2="-3.0"/>
+  <obstacle x1="5.0" y1="-3.0" x2="14.5" y2="-3.0"/>
+  <obstacle x1="17.0" y1="-3.0" x2="19.0" y2="-3.0"/>
+  <obstacle x1="19.0" y1="-3.0" x2="19.0" y2="3.0"/>
+  <obstacle x1="19.0" y1="3.0" x2="17.0" y2="3.0"/>
+  <obstacle x1="5.0" y1="3.0" x2="14.5" y2="3.0"/>
+  <obstacle x1="-1.0" y1="3.0" x2="2.5" y2="3.0"/>
+
+  <!-- Outer Space -->
+  <obstacle x1="-1.0" y1="6.0" x2="-1.0" y2="3.0"/>
+  <obstacle x1="-1.0" y1="6.0" x2="19.0" y2="6.0"/>
+  <obstacle x1="19.0" y1="6.0" x2="19.0" y2="-6.0"/>
+  <obstacle x1="19.0" y1="-6.0" x2="-1.0" y2="-6.0"/>
+  <obstacle x1="-1.0" y1="-6.0" x2="-1.0" y2="-3.0"/>
+
+  <!-- Waypoints -->
+  <waypoint id="left_door" x="3.5" y="3.0" r="1"/>
+  <waypoint id="right_door" x="3.5" y="-3.0" r="1"/>
+  <waypoint id="left_door2" x="16.0" y="3.0" r="1"/>
+  <waypoint id="right_door2" x="16.0" y="-3.0" r="1"/>
+
+  <waypoint id="left_d1" x="4.0" y="4.5" r="1.5"/>
+  <waypoint id="left_d2" x="15.9" y="4.0" r="1.0"/>
+
+  <!-- Sink -->
+  <!-- <waypoint id="left_d3" x="3.0" y="2.0" r="1.0" b="2"/>
+  <waypoint id="right_d3" x="3.0" y="-2.0" r="1.0" b="2"/> -->
+
+  <waypoint id="left_d3" x="3.0" y="2.0" r="1.0"/>
+  <waypoint id="left_d4" x="15.5" y="2.0" r="1.0"/>
+
+  <waypoint id="right_d1" x="4.0" y="-4.5" r="1.5"/>
+  <waypoint id="right_d2" x="15.9" y="-4.0" r="1.0"/>
+
+  <waypoint id="right_d3" x="3.0" y="-2.0" r="1.0"/>
+  <waypoint id="right_d4" x="15.5" y="-2.0" r="1.0"/>
+
+  <waypoint id="left_middle" x="9.0" y="4.5" r="1.5"/>
+  <waypoint id="right_middle" x="9.0" y="-4.5" r="1.5"/>
+
+  <waypoint id="left_hallway_1" x="12.0" y="1.3" r="1.5"/>
+  <waypoint id="left_hallway_2" x="6.0" y="1.3" r="1.5"/>
+  <waypoint id="right_hallway_1" x="12.0" y="-1.3" r="1.5"/>
+  <waypoint id="right_hallway_2" x="6.0" y="-1.3" r="1.5"/>
+
+  <waypoint id="left_add" x="0.0" y="4.5" r="1.0"/>
+  <waypoint id="right_add" x="0.0" y="-4.5" r="1.0"/>
+
+  <waypoint id="up" x="16.5" y="0.0" r="1.0"/>
+  <waypoint id="down" x="5.0" y="0.0" r="1.0"/>
+
+  <waypoint id="up1" x="6.0" y="2.5" r="1.0"/>
+  <waypoint id="down1" x="6.0" y="-2.5" r="1.0"/>
+
+  <!-- ROBOT -->
+  <agent x="0" y="0" n="1" dx="0.1" dy="0.1" type="2">
+  </agent>
+
+  <!-- <agent x="6.0" y="2.1" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="down1"/>
+    <addwaypoint id="up1"/>
+  </agent> -->
+
+ <!-- For dataset -->
+  <!-- <agent x="17.0" y="4.0" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_d3"/>
+  </agent>
+
+  <agent x="17.0" y="-4.0" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="left_d3"/>
+  </agent>
+
+  <agent x="16.5" y="2.0" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+  </agent>
+
+  <agent x="16.5" y="-2.0" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+  </agent> -->
+
+    <!--Agent-->
+  <agent x="0.0" y="4.5" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="left_d1"/>
+    <addwaypoint id="left_middle"/>
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+    <addwaypoint id="left_d1"/>
+  </agent>
+
+  <!--Agent-->
+  <agent x="4.0" y="-4.5" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d1"/>
+  </agent>
+
+    <!--Agent-->
+  <agent x="0.0" y="-4.5" n="1" dx="0.1" dy="0.1" type="1">
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d1"/>
+  </agent>
+
+  <!--Agent-->
+  <agent x="9.0" y="4.5" n="5" dx="3" dy="3" type="1">
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+    <addwaypoint id="left_d1"/>
+    <addwaypoint id="left_middle"/>
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+    <addwaypoint id="left_d1"/>
+  </agent>
+
+  <!--Agents-->
+  <agent x="9.0" y="-4.5" n="5" dx="3" dy="3" type="1">
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+    <addwaypoint id="left_d1"/>
+    <addwaypoint id="left_middle"/>
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+  </agent>
+
+    <!--Agent-->
+  <!-- <agent x="9.0" y="4.5" n="3" dx="3" dy="3" type="1">
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+  </agent> -->
+
+    <!--Agent-->
+  <!-- <agent x="9.0" y="-4.5" n="3" dx="3" dy="3" type="1">
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+  </agent> -->
+
+    <!--Agent-->
+  <agent x="9.0" y="3.0" n="4" dx="4" dy="2" type="1">
+    <addwaypoint id="left_d1"/>
+    <addwaypoint id="left_middle"/>
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+    <addwaypoint id="left_d1"/>
+    <addwaypoint id="left_middle"/>
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+  </agent>
+
+    <!--Agent-->
+  <agent x="4.0" y="-3.0" n="4" dx="4" dy="2" type="1">
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+    <addwaypoint id="left_d1"/>
+    <addwaypoint id="left_middle"/>
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+    <addwaypoint id="right_d1"/>
+    <addwaypoint id="right_middle"/>
+    <addwaypoint id="right_d2"/>
+    <addwaypoint id="right_door2"/>
+    <addwaypoint id="right_d4"/>
+    <addwaypoint id="right_hallway_1"/>
+    <addwaypoint id="left_hallway_2"/>
+    <addwaypoint id="left_d3"/>
+    <addwaypoint id="left_door"/>
+    <addwaypoint id="left_d1"/>
+    <addwaypoint id="left_middle"/>
+    <addwaypoint id="left_d2"/>
+    <addwaypoint id="left_door2"/>
+    <addwaypoint id="left_d4"/>
+    <addwaypoint id="left_hallway_1"/>
+    <addwaypoint id="right_hallway_2"/>
+    <addwaypoint id="right_d3"/>
+    <addwaypoint id="right_door"/>
+  </agent>
+
+
+</scenario>
+

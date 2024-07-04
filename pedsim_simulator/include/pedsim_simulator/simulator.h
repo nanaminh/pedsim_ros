@@ -70,6 +70,9 @@
 #include <dynamic_reconfigure/server.h>
 #include <pedsim_simulator/PedsimSimulatorConfig.h>
 
+// added by xzt:
+#include <gazebo_msgs/GetModelState.h>
+
 using SimConfig = pedsim_simulator::PedsimSimulatorConfig;
 
 /// \class Simulator

@@ -155,7 +155,8 @@ class Scene : public QObject, protected Ped::Tscene {
   std::vector<Location> obstacle_cells_;
 
   // Attributes
- protected:
+    // changed by xzt:
+ //protected:
   QList<Agent*> agents;
   QList<Obstacle*> obstacles;
   QMap<QString, Waypoint*> waypoints;

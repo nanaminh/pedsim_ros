@@ -10,6 +10,9 @@ from pedsim_msgs.msg import AgentStates # Note: replaced the above two lines to 
 from geometry_msgs.msg import Pose
 #from hunav_evaluator.sfm import SFM # Todo: replace this with the pedsim version
 
+robot_radius = 0.35
+agent_radius = 0.3
+
 def euclidean_distance(pose, pose1):
     return math.sqrt((pose.position.x - pose1.position.x)**2 + (pose.position.y - pose1.position.y)**2)
 
@@ -106,7 +109,7 @@ def avg_closest_person(agents, robot):
     for i in range(len(robot)):
         min_dist = 10000 
         for agent in agents[i].agent_states:
-            d = euclidean_distance(robot[i].pose.pose, agent.pose) #- robot[i].radius - agent.radius # TODO: check if I want to add radius
+            d = euclidean_distance(robot[i].pose.pose, agent.pose) - robot_radius - agent_radius
             if(d < min_dist):
                 min_dist = d
                 if min_dist < 0.0:
@@ -124,7 +127,7 @@ def minimum_distance_to_people(agents, robot):
 
     for i in range(len(robot)):
         for agent in agents[i].agent_states:
-            d = euclidean_distance(robot[i].pose.pose, agent.pose) #- robot[i].radius - agent.radius
+            d = euclidean_distance(robot[i].pose.pose, agent.pose) - robot_radius - agent_radius
             if d<0.0:
                 d = 0.0
             min_distance.append(d) 
@@ -140,7 +143,7 @@ def maximum_distance_to_people(agents, robot):
 
     for i in range(len(robot)):
         for agent in agents[i].agent_states:
-            max_distance.append(euclidean_distance(robot[i].pose.pose, agent.pose) )#- robot[i].radius)
+            max_distance.append(euclidean_distance(robot[i].pose.pose, agent.pose) )- robot_radius - agent_radius
     
     max_dist = max(max_distance)
     
@@ -155,7 +158,7 @@ def space_intrusions(agents, robot, k):
     for i in range(len(robot)):
         min_dist = 10000
         for agent in agents[i].agent_states:
-            d = euclidean_distance(robot[i].pose.pose, agent.pose) #- robot[i].radius - agent.radius
+            d = euclidean_distance(robot[i].pose.pose, agent.pose) - robot_radius - agent_radius
             if d < min_dist:
                 min_dist = d
                 if min_dist < 0.0:
@@ -168,7 +171,7 @@ def space_intrusions(agents, robot, k):
     space_intrusions = space_intrusions / len(robot)
     percentage = space_intrusions * 100.0
     print('percentage: %.2f' % percentage)
-    print('space_intrusions_list: %s' % space_intrusions_list)
+    #print('space_intrusions_list: %s' % space_intrusions_list)
 
     return percentage, space_intrusions_list
 

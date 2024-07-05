@@ -15,6 +15,7 @@ from pedsim_msgs.msg import AgentStates
 from nav_msgs.msg import Odometry
 from std_srvs.srv import Trigger, TriggerResponse
 from pedsim_msgs.msg import AgentStates
+from std_msgs.msg import Bool
 
 class NavMetrics:
     def __init__(self):
@@ -33,13 +34,13 @@ class NavMetrics:
         self.freq = 10 #rospy.get_param('~frequency', 0.0) 
         self.result_file_path = os.path.abspath('../tiago_ws_ros1/results/metrics') #rospy.get_param('~result_file', 'metrics')
         self.exp_tag = '1' #rospy.get_param('~experiment_tag', '1')
-        self.use_navgoal_to_start = False #rospy.get_param('~use_navgoal_to_start', True)
+        self.use_navgoal_to_start = True #rospy.get_param('~use_navgoal_to_start', True)
 
         if self.use_navgoal_to_start == True:
             self.recording = False
         else:
             self.recording = True
-        self.time_period = 5  # seconds # Time period for the metrics computation
+        self.time_period = 1000  # seconds # Time period for the metrics computation
         self.last_time = rospy.Time.now()
         self.init = False # This will turn to True when the agents are received
         self.end_timer = rospy.Timer(rospy.Duration(1.0), self.timer_end_callback) # Timer interval 1.0 seconds. 
@@ -63,8 +64,9 @@ class NavMetrics:
         # Agents subscriber 
         self.sub_agents = rospy.Subscriber('/pedsim_simulator/simulated_agents', AgentStates, self.human_callback)
         # Robot state subscriber 
-        self.sub_odom = rospy.Subscriber('/odom', Odometry, self.robot_callback)
+        self.sub_odom = rospy.Subscriber('/pedsim_simulator/robot_position', Odometry, self.robot_callback)
         self.sub_goal = rospy.Subscriber("/clicked_point", PointStamped, self.goal_callback)
+        self.sub_goal_status = rospy.Subscriber("/goal_status", Bool, self.goal_status_callback)
 
     ## Subscriber call back functions
     def human_callback(self, agents): 
@@ -94,24 +96,32 @@ class NavMetrics:
             self.use_navgoal_to_start = False
             self.recording = True
 
-    def recording_service(self, request):
-        response = TriggerResponse()
-        response.success = True
-        if self.recording:
-            rospy.loginfo("Pedsim evaluator stopping recording via service!")
+    def goal_status_callback(self, msg):
+        if msg.data:  # If goal_reached is True
+            rospy.loginfo("Pedsim evaluator stopping recording because the goal is reached")
             self.recording = False
-            response.message = 'Hunav recording stopped'
             self.compute_metrics()
         else:
-            rospy.loginfo("Hunav evaluator started recording!")
-            self.recording = True
-            response.message = 'Hunav recording started'
-        return response
+            rospy.loginfo("Goal is not reached...")
+
+    # def recording_service(self, request):
+    #     response = TriggerResponse()
+    #     response.success = True
+    #     if self.recording:
+    #         rospy.loginfo("Pedsim evaluator stopping recording via service!")
+    #         self.recording = False
+    #         response.message = 'Hunav recording stopped'
+    #         self.compute_metrics()
+    #     else:
+    #         rospy.loginfo("Hunav evaluator started recording!")
+    #         self.recording = True
+    #         response.message = 'Hunav recording started'
+    #     return response
 
     def timer_end_callback(self, event):
         if self.init:
             secs = (rospy.Time.now() - self.last_time).to_sec()
-            rospy.loginfo("self.last_time: %s", self.last_time)
+            #rospy.loginfo("self.last_time: %s", self.last_time)
             rospy.loginfo("Time elapsed: %f" % secs)
             if secs >= self.time_period:
                 self.recording = False
@@ -141,7 +151,6 @@ class NavMetrics:
             if len(metric) > 1:
                 self.metrics_lists[m] = metric[1]
 
-        rospy.loginfo('Metrics computed:')
         self.store_metrics(self.result_file_path)
 
         rospy.signal_shutdown('Metrics computation completed')
@@ -177,10 +186,12 @@ class NavMetrics:
                 file2.write(m + '\t')
             file2.write('\n')
             length = len(self.metrics_lists['time_stamps'])
-            for i in range(length):
-                for m in self.metrics_lists.keys():
-                    v = self.metrics_lists[m]
-                    file2.write(str(v[i]) + '\t')
+            for i in range(length): # for all time stamps
+                for m in self.metrics_lists.keys(): # for all keys 
+                    v = self.metrics_lists[m] # v is the list of values of that key
+                    #print(self.metrics_lists)
+                    #print(v)
+                    file2.write(str(v[i]) + '\t') # write for that time stamp
                 file2.write('\n')
         rospy.loginfo('Metrics stored!')
 
